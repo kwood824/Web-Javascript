@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<head>
+	<script src="jquery-1.11.0.js"></script>
+	<meta charset="utf-8">
+	<title>Basic Ajax</title>
+	
+	<style>
+		.main{border: 2px solid black;}
+		ul {list-style: none}
+	</style>
+</head>
+<body>
+	<h1>Basic Ajax</h1><br><br>
+	Select a page from the drop-down list and hit display to show it.
+	<form>
+		<select id = "selection">
+			<option value = "Basic Text" id = "basic"> Basic Text
+			<option value = "Basic HTML" id = "basic2"> Basic HTML
+			<option value = "Missing Page" id = "missing"> 404 Error
+			<option value = "Private Page" id = "private"> 403 Error
+		</select>
+		<input type = "button" value = "Display" onClick = "startAjax()">
+	</form><br>
+	
+	<div class = "main">
+		<h1>Other Page Content</h1>
+		<div id = "content">
+		</div>
+		<ul>
+				<li id = "list1"></li>
+				<li id = "list2"></li>
+				<li id = "list3"></li>
+		</ul>
+	</div>
+	
+	<script>
+	var store
+	function startAjax(){
+		$("#content").text("Calling Server...");
+		if (($("#selection").val()) == ($("#basic").val())){
+			var a = "basicpage.html"
+			$.ajax({
+				url:a,
+				beforeSend: urlStore(a),
+				success:callbackFunction, error:errorFunction
+			});
+		}
+		if (($("#selection").val()) == ($("#basic2").val())){
+			var a = "dark.html"
+			$.ajax({
+				url:a,
+				beforeSend: urlStore(a),
+				success:callbackFunction, error:errorFunction
+			});
+		}
+		if (($("#selection").val()) == ($("#missing").val())){
+			var a = "missing.html"
+			$.ajax({
+				url:a,
+				beforeSend: urlStore(a),
+				success:callbackFunction(a), error:errorFunction
+			});
+		}
+		if (($("#selection").val()) == ($("#private").val())){
+			var a = "private.html"
+			$.ajax({
+				url:a,
+				beforeSend: urlStore(a),
+				success:callbackFunction, error:errorFunction
+			});
+		}
+	}
+	function urlStore (data){
+		store = data;
+	}
+	function callbackFunction(data, info){
+		$("li").empty();
+		$("#content").text(data);
+	}
+	function errorFunction(data, info, url){
+			$("#content").text("ERROR");
+			$("#list1").text("The requested page was: "+store);
+			$("#list2").text("The error number returned was: "+info+data.status);
+			$("#list3").text("The error message was: "+url);
+	}
+	
+	</script>

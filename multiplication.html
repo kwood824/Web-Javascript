@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<head>
+	<script src="jquery-1.11.0.js"></script>
+	<meta charset="utf-8">
+	<title>Javascript Multiplication Table</title>
+	<style>
+	table{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: inset;
+	border-width: 2px;
+	border-color: #000000;
+	border-collapse: collapse;
+	border-spacing: 10px;
+	width: 75%;
+	}
+	tr, td{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-spacing: 10px;
+	padding: 5px;
+	</style>
+</head>
+<body>
+	<h1>Javascript Multiplication</h1><br><br>
+	Enter the minimum value and maximum value for the multiplication table here (0-100)
+	<form id="form1">
+		<input type="text" id="min">
+		<input type="text" id="max">
+		<input type = "button" value = "Generate Table" onClick = "validateMin()">
+	</form><br>
+
+	<div id = "results">
+	</div>
+	
+	<script>
+	function validateMin(){
+		var a = document.forms["form1"]["min"].value;
+		if (isNaN(a)){
+			alert("ERROR. Minimum value must be a number. Please enter a minimum value between 1 and 100.");
+		}
+		else{
+			a = parseInt($("#min").val());
+			if (a < 0 || a > 100){
+			alert("ERROR. Please enter a minimum value between 1 and 100.")
+			}
+			else {
+			validateMax();
+			}
+		}
+	}
+	function validateMax(){
+		var b = document.forms["form1"]["max"].value;
+		if (isNaN(b)){
+			alert("ERROR. Maximum value must be a number. Please enter a minimum value between 1 and 100.");
+		}
+		else{
+			var b = parseInt($("#max").val());
+			if (b < 0 || b > 100){
+			alert("ERROR. Please enter a maximum value between 1 and 100")
+			}
+			else {
+			compareNums();
+			}
+		}
+	}
+	function compareNums(){
+		var min = parseInt($("#min").val());
+		var max = parseInt($("#max").val());
+		if (min > max){
+		alert("ERROR. Minimum value is larger than Maximum value. Please re-enter your minimum and maximum values.")
+		}
+		else {
+		generateArray(min, max);
+		}
+	}
+	function generateArray(min, max){
+		var size = ((max - min) + 1);
+		var values = new Array(size);
+		for (rows = 0, rowValue = min; rows < size; rows++, rowValue++){
+			values[rows] = new Array(size);
+			for (cols = 0, colValue = min; cols < size; cols++, colValue++){
+				values[rows][cols] = ((rowValue) * (colValue));
+			}
+		}
+		generateTable(values, min, max)
+	}
+	function generateTable(array, min, max){
+		var tbl="<table>";
+		tbl+="<tr class=bordered>";
+		tbl+="<td class=bordered>" + "</td>";
+		for (var i = min; i < max + 1; ++i){
+				tbl+="<td class=bordered>" + i + "</td>";
+			}
+		tbl+="</tr>";
+		for (var row = 0; row < array.length; ++row, ++min){
+			tbl+="<tr class=bordered>";
+			tbl+="<td class=bordered>" + min + "</td>";
+			for (var col = 0; col < array[row].length; ++col){
+				tbl+="<td class=bordered>" + array[row][col] + "</td>";
+			}
+		tbl+="</tr>";
+	   }
+		tbl+="</table>";
+
+		$('#results').html(tbl);
+	}
+	</script>
+	
+</body>
+</html>

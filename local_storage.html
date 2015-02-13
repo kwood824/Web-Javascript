@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<head>
+	<script src="jquery-1.11.0.js"></script>
+	<script src="modernizr.custom.17892.js"></script>
+	<meta charset="utf-8">
+	<title>Local Storage</title>
+	
+	<style>
+		.main{border: 2px solid black;}
+	</style>
+</head>
+
+<body>
+	<h1>Local Storage</h1><br><br>
+	Enter the values you want used. Then use the buttons to perform various functions with them.
+	<form id="form1">
+		<input type="text" id="values"><br>
+		<input type = "button" value = "Save String" onClick = "saveString()">
+		<input type = "button" value = "Clear String" onClick = "clearString()">
+		<input type = "button" value = "Prepend" onClick = "prependString()">
+		<input type = "button" value = "Append" onClick = "appendString()">
+		<input type = "button" value = "Display String" onClick = "printString()">
+	</form><br>
+	
+	<div class = "main">
+		<h1>Output</h1>
+		<div id = "content">
+		</div>
+	</div>
+		
+	<script>
+	var val
+		function saveString(){
+			if (Modernizr.localstorage) {
+				window.localStorage.setItem("val", $("#values").val());
+				val = window.localStorage.getItem("val");
+			}
+			else {
+				$("#content").text("ERROR: Local Storage is Disabled on the Client");
+			}
+		}
+		function printString(){
+			val = window.localStorage.getItem("val")
+			if ((typeof val === 'undefined') || (val == "") || (val == null)){
+				$("#content").text("ERROR: There is nothing saved in the string!");
+			}
+			else{
+				$("#content").text(val);
+			}
+		}
+		function clearString(){
+			window.localStorage.removeItem("val");
+			val = window.localStorage.getItem("val");
+		}
+		function prependString(){
+			if ((typeof val === 'undefined') || (val == "") || (val == null)){
+				$("#content").text("ERROR: Nothing in the string to prepend to!");
+			}
+			else{
+				window.localStorage.setItem("val",$("#values").val() + val);
+				val = window.localStorage.getItem("val");
+			}
+		}
+		function appendString(){
+			if ((typeof val === 'undefined') || (val == "") || (val == null)){
+				$("#content").text("ERROR: Nothing in the string to append to!");
+			}
+			else{
+				window.localStorage.setItem("val", val + $("#values").val());
+				val = window.localStorage.getItem("val");
+			}
+		}
+		
+	</script>
+
+</body>
